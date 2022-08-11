@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         tvInput = findViewById(R.id.tvInput)
     }
 
+    
+
     fun onDigit(view: View) {
         /* Finds text content of view (button in this case)
         and appends the value to the input text view
@@ -31,10 +33,14 @@ class MainActivity : AppCompatActivity() {
         lastDecimalPoint = false
     }
 
+
+
     //Sets text view content to an empty string
     fun onClear(view: View) {
         tvInput?.text = ""
     }
+
+
 
     fun onDecimalPoint(view: View){
         if(lastNumeric && !lastDecimalPoint) {
@@ -43,6 +49,8 @@ class MainActivity : AppCompatActivity() {
             lastDecimalPoint = true
         }
     }
+
+
 
     fun onOperator(view: View) {
         /*Checks if there is an operator and
@@ -57,34 +65,102 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     fun onEqual(view: View) {
-        if(lastNumeric){
+        if (lastNumeric) {
             var tvValue = tvInput?.text.toString()
             var prefix = ""
 
-            try{
-                //If statement fixes bug where a negative value cannot be subtracted from
-                if(tvValue.startsWith("-")){
+            try {
+                if (tvValue.startsWith("-")) {
                     prefix = "-"
                     tvValue = tvValue.substring(1)
                 }
-                if(tvValue.contains("-")) {
+                if (tvValue.contains("-")) {
 
                     val splitValue = tvValue.split("-")
                     var one = splitValue[0]
                     var two = splitValue[1]
 
-                    if(prefix.isNotEmpty()){
+                    if (prefix.isNotEmpty()) {
                         one = prefix + one
                     }
 
-                    tvInput?.text = (one.toDouble() - two.toDouble()).toString()
+                    tvInput?.text = removeZeroAfterDot((one.toDouble() - two.toDouble()).toString())
+
+                } else if (tvValue.contains("+")) {
+
+                    if (tvValue.startsWith("-")) {
+                        prefix = "-"
+                        tvValue = tvValue.substring(1)
+                    }
+                    if (tvValue.contains("+")) {
+
+                        val splitValue = tvValue.split("+")
+                        var one = splitValue[0]
+                        var two = splitValue[1]
+
+                        if (prefix.isNotEmpty()) {
+                            one = prefix + one
+                        }
+
+                        tvInput?.text = removeZeroAfterDot((one.toDouble() + two.toDouble()).toString())
+                    }
+                } else if (tvValue.contains("*"))
+
+                    if (tvValue.startsWith("-")) {
+                        prefix = "-"
+                        tvValue = tvValue.substring(1)
+                    }
+                if (tvValue.contains("*")) {
+
+                    val splitValue = tvValue.split("*")
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if (prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    tvInput?.text = removeZeroAfterDot((one.toDouble() * two.toDouble()).toString())
+
+                } else {
+                    if (tvValue.startsWith("/")) {
+                        prefix = "-"
+                        tvValue = tvValue.substring(1)
+                    }
+                    if (tvValue.contains("/")) {
+
+                        val splitValue = tvValue.split("/")
+                        var one = splitValue[0]
+                        var two = splitValue[1]
+
+                        if (prefix.isNotEmpty()) {
+                            one = prefix + one
+                        }
+
+                        tvInput?.text = removeZeroAfterDot((one.toDouble() / two.toDouble()).toString())
+                    }
                 }
+
             }catch(e: ArithmeticException){
                 e.printStackTrace()
             }
         }
     }
+
+
+
+    private fun removeZeroAfterDot(result : String): String {
+        var value = result
+        if(result.contains(".0")){
+            value = result.substring(0, result.length -2)
+        }
+        return value
+    }
+
+
 
     private fun isOperatorAdded(value: String): Boolean {
         return if(value.startsWith("-")){
