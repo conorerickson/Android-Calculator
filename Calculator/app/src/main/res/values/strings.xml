@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Calculator</string>
-    <string name="calc_text">1234567890</string>
     <string name="btnEquals">=</string>
     <string name="btnPlus">+</string>
     <string name="btnClear">Clr</string>
