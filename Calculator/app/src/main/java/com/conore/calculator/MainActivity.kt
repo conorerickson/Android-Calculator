@@ -10,6 +10,9 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
 
     private var tvInput: TextView? = null
+    var lastNumeric : Boolean = false
+    var lastDecimalPoint : Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +26,20 @@ class MainActivity : AppCompatActivity() {
         and appends the value to the input text view
         if the value is null, nothing happens */
         tvInput?.append((view as Button).text)
+        lastNumeric = true
+        lastDecimalPoint = false
     }
 
     //Sets text view content to an empty string
     fun onClear(view: View) {
         tvInput?.text = ""
+    }
+
+    fun onDecimalPoint(view: View){
+        if(lastNumeric && !lastDecimalPoint) {
+            tvInput?.append(".")
+            lastNumeric = false
+            lastDecimalPoint = true
+        }
     }
 }
