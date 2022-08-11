@@ -42,4 +42,29 @@ class MainActivity : AppCompatActivity() {
             lastDecimalPoint = true
         }
     }
+
+    fun onOperator(view: View) {
+        /*Checks if there is an operator and
+        disables ability to append more operators */
+
+        tvInput?.text?.let {
+            if(lastNumeric && !isOperatorAdded(it.toString())){
+                tvInput?.append((view as Button).text)
+                lastNumeric = false
+                lastDecimalPoint = false
+            }
+        }
+    }
+
+    private fun isOperatorAdded(value: String): Boolean {
+        return if(value.startsWith("-")){
+            false
+        }else{
+            value.contains("/")
+                    || value.contains("*")
+                    || value.contains("+")
+                    || value.contains("-")
+        }
+    }
+
 }
